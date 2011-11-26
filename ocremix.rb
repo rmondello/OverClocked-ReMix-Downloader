@@ -2,13 +2,10 @@
 
 # OCRemix Filtered Downloader
 # Written by Ricky Mondello
-# http://github.com/rmondello/SOMETHING
+# https://github.com/rmondello/OverClocked-ReMix-Downloader
 
-# TODO: Test with a lack of network connection.
-# TODO: Pick a random mirror.
-
-require 'rubygems'
-require 'ruby-debug'
+# TODO: Gracefully handle a lack of network connectivity.
+# TODO: Pick a random mirror instead of the first one listed.
 
 require 'rss/1.0'
 require 'rss/2.0'
@@ -126,5 +123,4 @@ rss.items.each do |item|
   end
 end
 
-# Update the last checked date.
 write_date_to_disk
