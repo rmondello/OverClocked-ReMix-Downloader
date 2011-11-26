@@ -13,7 +13,7 @@ This script solves these problems. If you schedule it to run over time, it'll he
 
 I don't entirely expect this to be useful to anyone else, but if it is, let me know!
 
-### ocremix.rb
+## ocremix.rb
 
 	ocremix.rb 'Sonic|Mario|Zelda|Pokémon|NiGHTS' iTunes
 
@@ -31,11 +31,11 @@ If you want to see what the script is doing as it runs, there's an optional debu
 
 	ocremix.rb all iTunes debug
 
-### Automating the downloading
+## Automating the downloading
 
 This script is pretty okay by itself, but doesn't shine until you schedule it to run automatically in the background. To ensure it doesn't download the same file twice, it keeps a timestamp of the last time it ran. It doesn't evaluate any remixes whose published date is older than this timestamp. The timestamp is stored in `.last_attempt`.
 
-#### cron
+### cron
 
 To schedule the OverClocked ReMix Downloader periodically, run `crontab -e`, which will open your crontab up in your `$EDITOR`.
 
@@ -45,11 +45,11 @@ To run it every day at midnight:
 
 That's it!
 
-#### launchd
+### launchd
 
 There is an incomplete/non-functional launchd plist at `com.rmondello.ocremix.plist`. I hope to complete it soon.
 
-### iTunes smart playlist
+## iTunes smart playlist
 
 ![iTunes smart playlist](https://github.com/rmondello/OverClocked-ReMix-Downloader/raw/master/smart_playlist.png)
 
