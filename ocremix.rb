@@ -23,10 +23,10 @@ DATE_FILE = File.expand_path(File.dirname(__FILE__)) + File::SEPARATOR + ".last_
 # Arguments and debug mode
 title_string, path_string, debug_string = ARGV
 unless title_string && path_string
-  $stderr.puts "usage: ocrfd.rb title_filter_pattern download_directory [debug]"
+  $stderr.puts "usage: ocremix.rb title_filter_pattern download_directory [debug]"
   $stderr.puts ""
-  $stderr.puts "example: ocrfd.rb all iTunes"
-  $stderr.puts "example: ocrfd.rb 'Sonic' 'downloads/'"
+  $stderr.puts "example: ocremix.rb all iTunes"
+  $stderr.puts "example: ocremix.rb 'Sonic' 'downloads/'"
   exit 1
 end
 
