@@ -13,23 +13,23 @@ This script solves these problems. If you schedule it to run over time, it'll he
 
 I don't entirely expect this to be useful to anyone else, but if it is, let me know!
 
-### ocrfd.rb
+### ocremix.rb
 
-	ocrfd.rb 'Sonic|Mario|Zelda|Pokémon|NiGHTS' iTunes
+	ocremix.rb 'Sonic|Mario|Zelda|Pokémon|NiGHTS' iTunes
 
 This will download the most recent 10 remixes on ocremix.org whose titles match the regular expression `/Sonic|Mario|Zelda|Pokémon|NiGHTS/` and add them to your iTunes library.
 
 If you aren't as driven by nostalgia as I am and would like to keep remixes from all games, use the special "all" keyword:
 
-	ocrfd.rb all iTunes
+	ocremix.rb all iTunes
 
 And for those not using a Mac or iTunes, the final argument can be replaced with a file path.
 
-	example: ocrfd.rb 'Sonic' 'downloads/'
+	example: ocremix.rb 'Sonic' 'downloads/'
 
 If you want to see what the script is doing as it runs, there's an optional debug flag:
 
-	ocrfd.rb all iTunes debug
+	ocremix.rb all iTunes debug
 
 ### Automating the downloading
 
@@ -37,20 +37,20 @@ This script is pretty okay by itself, but doesn't shine until you schedule it to
 
 #### cron
 
-To schedule the OCRemix Downloader periodically, run `crontab -e`, which will open your crontab up in your `$EDITOR`.
+To schedule the OverClocked ReMix Downloader periodically, run `crontab -e`, which will open your crontab up in your `$EDITOR`.
 
 To run it every day at midnight:
 
-	0 0 * * * /PATH/TO/ocremix_filtered_downloader/ocrfd.rb all iTunes
+	0 0 * * * /PATH/TO/OverClocked-ReMix-Downloader/ocremix.rb all iTunes
 
 That's it!
 
 #### launchd
 
-There is an incomplete/non-functional launchd plist at `com.rmondello.ocrfd.plist`. I hope to complete it soon.
+There is an incomplete/non-functional launchd plist at `com.rmondello.ocremix.plist`. I hope to complete it soon.
 
 ### iTunes smart playlist
 
 ![iTunes smart playlist](https://github.com/rmondello/OverClocked-ReMix-Downloader/raw/master/smart_playlist.png)
 
-Sort this playlist by date, and you'll be able to easily monitor what OCRemix Downloader has downloaded for you.
+Sort this playlist by date, and you'll be able to easily monitor what OverClocked ReMix Downloader has downloaded for you.
