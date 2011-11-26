@@ -51,6 +51,6 @@ There is an incomplete/non-functional launchd plist at `com.rmondello.ocrfd.plis
 
 ### iTunes smart playlist
 
-![iTunes smart playlist](smart_playlist.png)
+![iTunes smart playlist](https://github.com/rmondello/OverClocked-ReMix-Downloader/raw/master/smart_playlist.png)
 
 Sort this playlist by date, and you'll be able to easily monitor what OCRemix Downloader has downloaded for you.
