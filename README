@@ -1,0 +1,56 @@
+# OverClocked ReMix Downloader
+
+Automatically and incrementally builds a library of high-quality video game remixes from the games of your choice.
+
+---
+
+I love [OverClocked ReMix](http://ocremix.org/). The community makes the best video game remixes around, and I've been a fan for years. That said, as a user/listener, I have two problems:
+
+1. I'm a little too nostalgia-focused. I only want to check out a subset of the remixes posted to the site, corresponding to the games I played when I was younger.
+2. I don't want to have to manually download these remixes and add them to my iTunes library.
+
+This script solves these problems. If you schedule it to run over time, it'll help you amass a nice collection of remixes.
+
+I don't entirely expect this to be useful to anyone else, but if it is, let me know!
+
+### ocrfd.rb
+
+	ocrfd.rb 'Sonic|Mario|Zelda|Pokémon|NiGHTS' iTunes
+
+This will download the most recent 10 remixes on ocremix.org whose titles match the regular expression `/Sonic|Mario|Zelda|Pokémon|NiGHTS/` and add them to your iTunes library.
+
+If you aren't as driven by nostalgia as I am and would like to keep remixes from all games, use the special "all" keyword:
+
+	ocrfd.rb all iTunes
+
+And for those not using a Mac or iTunes, the final argument can be replaced with a file path.
+
+	example: ocrfd.rb 'Sonic' 'downloads/'
+
+If you want to see what the script is doing as it runs, there's an optional debug flag:
+
+	ocrfd.rb all iTunes debug
+
+### Automating the downloading
+
+This script is pretty okay by itself, but doesn't shine until you schedule it to run automatically in the background. To ensure it doesn't download the same file twice, it keeps a timestamp of the last time it ran. It doesn't evaluate any remixes whose published date is older than this timestamp. The timestamp is stored in `.last_attempt`.
+
+#### cron
+
+To schedule the OCRemix Downloader periodically, run `crontab -e`, which will open your crontab up in your `$EDITOR`.
+
+To run it every day at midnight:
+
+	0 0 * * * /PATH/TO/ocremix_filtered_downloader/ocrfd.rb all iTunes
+
+That's it!
+
+#### launchd
+
+There is an incomplete/non-functional launchd plist at `com.rmondello.ocrfd.plist`. I hope to complete it soon.
+
+### iTunes smart playlist
+
+![iTunes smart playlist](smart_playlist.png)
+
+Sort this playlist by date, and you'll be able to easily monitor what OCRemix Downloader has downloaded for you.
