@@ -4,18 +4,14 @@
 # Written by Ricky Mondello
 # https://github.com/rmondello/OverClocked-ReMix-Downloader
 
-# TODO: Gracefully handle a lack of network connectivity.
-# TODO: Pick a random mirror instead of the first one listed.
-
 require 'rss/1.0'
 require 'rss/2.0'
 require 'open-uri'
 require 'net/http'
-require 'date'
 
 # Constants
 SOURCE_FEED = "http://www.ocremix.org/feeds/ten20/"
-DATE_FILE = File.expand_path(File.dirname(__FILE__)) + File::SEPARATOR + ".last_attempt"
+HISTORY_FILE = File.expand_path(File.dirname(__FILE__)) + File::SEPARATOR + ".ocremix_history"
 
 # Arguments and debug mode
 title_string, path_string, debug_string = ARGV
@@ -27,6 +23,14 @@ unless title_string && path_string
   exit 1
 end
 
+# Useful in converting history representation (file -> string -> array -> hash)
+module Enumerable
+  def to_hash
+    self.inject({}) { |h, i| h[i] = i; h }
+  end
+end
+
+# Parse the search query
 begin
   if /\*|all|everything/i.match(title_string) != nil
     title_string = ""
@@ -37,10 +41,10 @@ rescue
   exit 1
 end
 
+# Parse the download path
 if /iTunes/i.match(path_string) != nil
   path_string = "~/Music/iTunes/iTunes Music/Automatically Add to iTunes/"
 end
-
 path_prefix = File.expand_path path_string
 unless File.directory? path_prefix
   $stderr.puts "error: directory " + path_prefix + " does not exist"
@@ -49,7 +53,6 @@ end
 
 $debug = true if debug_string
 
-# Functions
 def get_download_link_from_page(url)
   http_response = Net::HTTP.get_response(URI.parse(url))
   response_body = http_response.body
@@ -57,22 +60,13 @@ def get_download_link_from_page(url)
   match != nil ? match[0].strip : nil
 end
 
-def download_and_write_file_if_necessary(url, path_prefix)
+def download_and_write_file(url, path_prefix)
   filename = url.split("/").last
   path = path_prefix + File::SEPARATOR + filename
-  if File.exist? path
-    puts "File already exists. Not written."
-    return
-  end
-
+  puts "  Downloading: #{url}" if $debug
   http_response = Net::HTTP.get_response(URI.parse(url))
-  response_body = http_response.body
-  
-  f = File.new(path, "w")
-  f.write(response_body)
-  f.close
-    
-  puts "File: " + path if $debug
+  File.open(path, 'w') {|f| f.write http_response.body }
+  puts "  Written: #{path}" if $debug
 end
 
 def get_rss_object(feed_url)
@@ -81,46 +75,41 @@ def get_rss_object(feed_url)
   RSS::Parser.parse(content, false)
 end
 
-def get_last_attempt()
+def read_history_from_disk()
   begin
-    Time.at(File.open(DATE_FILE, "rb").read.to_i)
+    File.open(HISTORY_FILE, "rb").read.split("\n").to_hash
   rescue
-    nil
+    {}
   end
 end
 
-def write_date_to_disk()
-  f = File.new(DATE_FILE, "w")
-  f.write Time.now.to_i
+def write_history_to_disk(h)
+  f = File.new(HISTORY_FILE, "w")
+  f.write h.keys.join "\n"
   f.close
 end
 
-
-
-last_attempt = get_last_attempt()
-puts "Last attempt: " + (last_attempt ? last_attempt.to_s : "Never") + "\n" if $debug
-
+h = read_history_from_disk
 rss = get_rss_object(SOURCE_FEED)
 rss.items.each do |item|
-  if last_attempt
-    next if item.date < last_attempt
+  item_key = item.guid.content
+  puts "#{item.title} (#{item_key})" if $debug
+  if h.has_key? item_key
+    print "  Skipping: Already in history file.\n\n" if $debug
+    next
   end
-  
-  if (title_regex.match item.title) != nil
-    page_url = item.guid.content.sub("www.", "")
-    next if page_url == nil
-    
-    link_to_mp3 = get_download_link_from_page(page_url)
-    if $debug
-      puts "Title: " + item.title
-      puts "Page: " + page_url
-      puts "MP3: " + link_to_mp3
-    end
-    
-    download_and_write_file_if_necessary(link_to_mp3, path_prefix)
-    
-    puts "" if $debug
+
+  if (title_regex.match item.title) == nil
+    print "  Skipping: Does not match input pattern #{title_regex.source}\n\n"
+    next
   end
+
+  page_url = item.guid.content.sub("www.", "")
+  link_to_mp3 = get_download_link_from_page(page_url)
+  download_and_write_file(link_to_mp3, path_prefix)
+  h[item_key] = item_key
+
+  print "\n" if $debug
 end
 
-write_date_to_disk
+write_history_to_disk h
