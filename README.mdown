@@ -33,7 +33,7 @@ If you want to see what the script is doing as it runs, there's an optional debu
 
 ## Automating the downloading
 
-This script is pretty okay by itself, but doesn't shine until you schedule it to run automatically in the background. To ensure it doesn't download the same file twice, it keeps a timestamp of the last time it ran. It doesn't evaluate any remixes whose published date is older than this timestamp. The timestamp is stored in `.last_attempt`.
+This script is pretty okay by itself, but doesn't shine until you schedule it to run automatically in the background. To ensure it doesn't download the same file twice, keeps a history of every file it's downloaded in `.ocremix_history`.
 
 ### cron
 
@@ -44,10 +44,6 @@ To run it every day at midnight:
 	0 0 * * * /PATH/TO/OverClocked-ReMix-Downloader/ocremix.rb all iTunes
 
 That's it!
-
-### launchd
-
-There is an incomplete/non-functional launchd plist at `com.rmondello.ocremix.plist`. I hope to complete it soon.
 
 ## iTunes smart playlist
 
