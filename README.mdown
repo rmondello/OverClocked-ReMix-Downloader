@@ -1,29 +1,31 @@
 # OverClocked ReMix Downloader
 
-Automatically and incrementally builds a library of high-quality video game remixes from the games of your choice.
+This utility automatically and incrementally builds a library of high-quality video game remixes from [OverClocked ReMix](http://ocremix.org/). You can use it to keep your library up to date with all of the latest remixes, or only the remixes from games that you choose.
 
----
+**Note:** If you're looking to download all of OCRemix's back catalog, I recommend using the [torrents page](http://ocremix.org/torrents/) or [this script](https://github.com/Kentaree/ocremix-downloader).
+
+The OverClocked ReMix Downloader will only help you keep your remix library in up-to-date moving forward as new remixes are added. Set it and forget it.
+
+## Background
 
 I love [OverClocked ReMix](http://ocremix.org/). The community makes the best video game remixes around, and I've been a fan for years. That said, as a user/listener, I have two problems:
 
-1. I'm a little too nostalgia-focused. I only want to check out a subset of the remixes posted to the site, corresponding to the games I played when I was younger.
+1. I'm a little too nostalgia-focused. I only want to check out a subset of the remixes posted to the site, corresponding to the games I played when I was growing up.
 2. I don't want to have to manually download these remixes and add them to my iTunes library.
 
-This script solves these problems. If you schedule it to run over time, it'll help you amass a nice collection of remixes.
-
-I don't entirely expect this to be useful to anyone else, but if it is, let me know!
+This script solves these problems. If you schedule it to run automatically, it'll help you amass a nice collection of remixes.
 
 ## ocremix.rb
 
 	ocremix.rb 'Sonic|Mario|Zelda|Pokémon|NiGHTS' iTunes
 
-This will download the most recent 10 remixes on ocremix.org whose titles match the regular expression `/Sonic|Mario|Zelda|Pokémon|NiGHTS/` and add them to your iTunes library.
+This will download the most recent 10 remixes on ocremix.org whose titles contain __Sonic__ OR __Mario__ OR __ZELDA__ etc, and add them to your iTunes library.
 
-If you aren't as driven by nostalgia as I am and would like to keep remixes from all games, use the special "all" keyword:
+If you'd like to keep remixes from all games, use the special "all" keyword:
 
 	ocremix.rb all iTunes
 
-And for those not using a Mac or iTunes, the final argument can be replaced with a file path.
+If you're not using a Mac or iTunes, the final argument can be replaced with a file path:
 
 	example: ocremix.rb 'Sonic' 'downloads/'
 
@@ -33,20 +35,24 @@ If you want to see what the script is doing as it runs, there's an optional debu
 
 ## Automating the downloading
 
-This script is pretty okay by itself, but doesn't shine until you schedule it to run automatically in the background. To ensure it doesn't download the same file twice, it keeps a history of every file it's downloaded in `.ocremix_history`.
+This script doesn't shine until you schedule it to run daily in the background, keeping your library up to date. It ensures that it doesn't download the same file twice by keeping a history of every file it's downloaded in `.ocremix_history`.
 
 ### cron
 
-To schedule the OverClocked ReMix Downloader periodically, run `crontab -e`, which will open your crontab up in your `$EDITOR`.
+If you're running Linux or Mac OS X, it's easy to schedule the OverClocked ReMix Downloader to run periodically. In your terminal, run `crontab -e`, which will open your [crontab](http://en.wikipedia.org/wiki/Cron) in your `$EDITOR`.
 
-To run it every day at midnight:
+If you're not comfortable on the command line, or with vim, try using `env EDITOR=nano crontab -e` instead.
+
+To schedule the script it run every day at midnight, add this to the bottom of the file:
 
 	0 0 * * * /PATH/TO/OverClocked-ReMix-Downloader/ocremix.rb all iTunes
 
-That's it!
-
 ## iTunes smart playlist
+
+If you're using iTunes, it's easy to keep track of all of the tracks the OverClocked ReMix Downloader have grabbed for you. Make the following smart playlist and sort it by date.
 
 ![iTunes smart playlist](https://github.com/rmondello/OverClocked-ReMix-Downloader/raw/master/smart_playlist.png)
 
-Sort this playlist by date, and you'll be able to easily monitor what OverClocked ReMix Downloader has downloaded for you.
+## Finally
+
+Let me know if you have any problems! With luck, someone other than me will find this useful.
