@@ -85,7 +85,7 @@ end
 
 def write_history_to_disk(h)
   f = File.new(HISTORY_FILE, "w")
-  f.write h.keys.join "\n"
+  f.write h.keys.sort.join "\n"
   f.close
 end
 
