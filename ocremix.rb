@@ -43,7 +43,7 @@ end
 
 # Parse the download path
 if /iTunes/i.match(path_string) != nil
-  path_string = "~/Music/iTunes/iTunes Music/Automatically Add to iTunes/"
+  path_string = "~/Music/iTunes/iTunes Media/Automatically Add to iTunes/"
 end
 path_prefix = File.expand_path path_string
 unless File.directory? path_prefix
