@@ -99,7 +99,7 @@ rss.items.each do |item|
   end
 
   if (title_regex.match item.title) == nil
-    print "  Skipping: Does not match input pattern #{title_regex.source}\n\n"
+    print "  Skipping: Does not match input pattern #{title_regex.source}\n\n" if $debug
     next
   end
 
