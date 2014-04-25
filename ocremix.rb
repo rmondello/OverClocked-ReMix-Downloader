@@ -54,14 +54,13 @@ end
 $debug = true if debug_string
 
 def get_download_link_from_page(url)
-  http_response = Net::HTTP.get_response(URI.parse(url))
-  response_body = http_response.body
+  response_body = open(url){|f|f.read}
   match = /http:\/\/.*mp3/.match response_body
   match != nil ? match[0].strip : nil
 end
 
 def download_and_write_file(url, path_prefix)
-  filename = url.split("/").last
+  filename = url.split('/').last
   path = path_prefix + File::SEPARATOR + filename
   puts "  Downloading: #{url}" if $debug
   http_response = Net::HTTP.get_response(URI.parse(url))
