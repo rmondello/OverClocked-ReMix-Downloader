@@ -8,6 +8,7 @@ require 'rss/1.0'
 require 'rss/2.0'
 require 'open-uri'
 require 'net/http'
+require 'cgi'
 
 # Constants
 SOURCE_FEED = "http://www.ocremix.org/feeds/ten20/"
@@ -60,7 +61,7 @@ def get_download_link_from_page(url)
 end
 
 def download_and_write_file(url, path_prefix)
-  filename = url.split('/').last
+  filename = CGI::unescape(url.split('/').last)
   path = path_prefix + File::SEPARATOR + filename
   puts "  Downloading: #{url}" if $debug
   http_response = Net::HTTP.get_response(URI.parse(url))
